@@ -44,9 +44,11 @@ int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<uns
 
 int SimSearcher::checkED(const string &a, const string &b, int threshold)
 {
-	if(abs(a.size() - b.size()) > threshold) return 0;
+	int a_size = a.size();
+	int b_size = b.size();
+	if(abs(a_size - b_size) > threshold) return 0;
 
-	int min_size = a.size();
+	int min_size = a_size;
 	int wide_size = 2*threshold + 1; 
 	int ed[min_size][wide_size];
 	int a_equel_b;
@@ -64,11 +66,11 @@ int SimSearcher::checkED(const string &a, const string &b, int threshold)
 		if(ed[i][0] > threshold) bigger_than_threshold++;
 		for(int j=1; j<wide_size-1; j++)
 		{
-			a_equel_b = ((i + j - threshold)>=0 && (i + j - threshold)<b.size()) ? (a[i] == b[i + j - threshold]):0;
+			a_equel_b = ((i + j - threshold)>=0 && (i + j - threshold)<b_size) ? (a[i] == b[i + j - threshold]):0;
 			ed[i][j] = min(ed[i-1][j] + 1 - a_equel_b, min(ed[i][j-1]+1, ed[i-1][j+1]+1));
 			if(ed[i][j] > threshold) bigger_than_threshold++;
 		}
-		a_equel_b = ((i + threshold) < b.size()) ? (a[i] == b[i + threshold]):0;
+		a_equel_b = ((i + threshold) < b_size) ? (a[i] == b[i + threshold]):0;
 		ed[i][wide_size-1] = min(ed[i-1][wide_size-1] + 1 - a_equel_b, ed[i][wide_size-2]+1);
 		if(ed[i][wide_size-1] > threshold) bigger_than_threshold++;
 		if(bigger_than_threshold == wide_size) return 0;
@@ -80,7 +82,7 @@ int SimSearcher::checkED(const string &a, const string &b, int threshold)
     		cout<<ed[i][j]<<" ";
     	cout << endl;
     }*/
-    if(ed[a.size()-1][b.size()+threshold-a.size()] > threshold) return 0;
+    if(ed[a_size-1][b_size+threshold-a_size] > threshold) return 0;
     return 1;
 }
 
