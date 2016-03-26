@@ -16,6 +16,8 @@ public:
 	~SimSearcher();
 
 	int createIndex(const char *filename, unsigned q);
+	void readfile(const char *filename);
+
 	int searchJaccard(const char *query, double threshold, std::vector<std::pair<unsigned, double> > &result);
 	int searchED(const char *query, unsigned threshold, std::vector<std::pair<unsigned, unsigned> > &result);
 

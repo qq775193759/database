@@ -44,9 +44,11 @@ int main(int argc, char **argv)
 
 
 
-	//string a = "abcdefgaaaaaaaaaa";
-	//string b = "abcdefgaaaaaaa";
-	for(int i=0;i<100000;i++)
+	/*string a = "JDQMMODGNUZWLXAPKCEIHOQOWEHBUJHS";
+	string b = "DQTMMODGNUZWLXAPUCEIHOQOWEHBUJHS";
+	searcher.checkED(a,b,3);*/
+
+	for(int i=0;i<100000000;i++)
 	{
 		string s = rand_string();
 		string t = rand_string(s, 4);
@@ -58,7 +60,7 @@ int main(int argc, char **argv)
 			cout<<res1<<" "<<res2<<" ";
 		}
 	}
-	//searcher.checkED(a,b,3);
+	//searcher.readfile("input");
 
 	return 0;
 }

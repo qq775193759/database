@@ -1,5 +1,6 @@
 #include "SimSearcher.h"
 #include <iostream>
+#include <fstream>
 #include <cmath>
 
 using namespace std;
@@ -17,6 +18,18 @@ int SimSearcher::createIndex(const char *filename, unsigned q)
 	return SUCCESS;
 }
 
+void SimSearcher::readfile(const char *filename)
+{
+	ifstream fin(filename);
+	string s;
+	while(fin>>s)
+	{
+		words.push_back(s);
+	}
+	fin.close();
+	cout<<words.size();
+}
+
 int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<unsigned, double> > &result)
 {
 	result.clear();
@@ -32,14 +45,14 @@ int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<uns
 int SimSearcher::checkED(const string &a, const string &b, int threshold)
 {
 	if(abs(a.size() - b.size()) > threshold) return 0;
-	
+
 	int min_size = a.size();
 	int wide_size = 2*threshold + 1; 
 	int ed[min_size][wide_size];
 	int a_equel_b;
 
 	for(int j=0; j<threshold; j++)
-		ed[0][j] = threshold + 1;
+		ed[0][j] = threshold - j;
 	for(int j=threshold; j<wide_size; j++)
 		ed[0][j] = min(j - threshold + 1 - (a[0] == b[j - threshold]), ed[0][j-1]+1);
 
