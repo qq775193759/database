@@ -46,12 +46,17 @@ int main(int argc, char **argv)
 
 	//string a = "abcdefgaaaaaaaaaa";
 	//string b = "abcdefgaaaaaaa";
-	for(int i=0;i<10000;i++)
+	for(int i=0;i<100000;i++)
 	{
 		string s = rand_string();
-		string t = rand_string(s, 2);
-		if(searcher.checkED(s,t,2) != searcher.checkED_naive(s,t,2))
-		cout<<s<<"   "<<t<<endl;
+		string t = rand_string(s, 4);
+		int res1 = searcher.checkED(s,t,3);
+		int res2 = searcher.checkED_naive(s,t,3); 
+		if(res1 != res2)
+		{
+			cout<<s<<"   "<<t<<endl;
+			cout<<res1<<" "<<res2<<" ";
+		}
 	}
 	//searcher.checkED(a,b,3);
 

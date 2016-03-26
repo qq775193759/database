@@ -32,6 +32,7 @@ int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<uns
 int SimSearcher::checkED(const string &a, const string &b, int threshold)
 {
 	if(abs(a.size() - b.size()) > threshold) return 0;
+	
 	int min_size = a.size();
 	int wide_size = 2*threshold + 1; 
 	int ed[min_size][wide_size];
@@ -79,7 +80,7 @@ int SimSearcher::checkED_naive(const string &a, const string &b, int threshold)
 		ed[i][0]=i;
 	for(int i=0;i<a.size();i++)
 		for(int j=0;j<b.size();j++)
-			ed[i+1][j+1] = min(ed[i][j] + 1 - (a[i] == b[j]), min(ed[i][j+1], ed[i+1][j]));
+			ed[i+1][j+1] = min(ed[i][j] + 1 - (a[i] == b[j]), min(ed[i][j+1] + 1, ed[i+1][j] + 1));
 
 	if(ed[a.size()][b.size()] > threshold) return 0;
 	return 1;
