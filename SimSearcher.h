@@ -16,7 +16,8 @@ public:
 	~SimSearcher();
 
 	int createIndex(const char *filename, unsigned q);
-	void readfile(const char *filename);
+	void readFile(const char *filename);
+	void addWord(int n, unsigned q);
 
 	int searchJaccard(const char *query, double threshold, std::vector<std::pair<unsigned, double> > &result);
 	int searchED(const char *query, unsigned threshold, std::vector<std::pair<unsigned, unsigned> > &result);
@@ -26,7 +27,7 @@ public:
 	int checkED_naive(const string &a, const string &b, int threshold);
 
 	std::vector<string> words;
-	std::map<string, std::vector<int> > revers;
+	std::map<string, std::vector<int> > index;
 };
 
 

@@ -57,7 +57,7 @@ int main(int argc, char **argv)
 	unsigned q = 3, edThreshold = 2;
 	double jaccardThreshold = 0.85;
 
-	searcher.createIndex(argv[1], q);
+	//searcher.createIndex(argv[1], q);
 	searcher.searchJaccard("query", jaccardThreshold, resultJaccard);
 	searcher.searchED("query", edThreshold, resultED);
 
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 	string b = "DAZFDSESNMJU";
 	searcher.checkED(a,b,5);*/
 
-	for(int i=0;i<1000000;i++)
+	/*for(int i=0;i<1000000;i++)
 	{
 		string s = rand_string();
 		//string t = rand_string(s, 4);
@@ -83,8 +83,9 @@ int main(int argc, char **argv)
 			cout<<s<<"   "<<t<<endl;
 			cout<<res1<<" "<<res2<<" ";
 		}
-	}
-	//searcher.readfile("input");
+	}*/
+	//searcher.readFile("input");
+	searcher.createIndex("input", q);
 
 	return 0;
 }

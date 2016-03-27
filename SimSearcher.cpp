@@ -15,10 +15,16 @@ SimSearcher::~SimSearcher()
 
 int SimSearcher::createIndex(const char *filename, unsigned q)
 {
+	readFile(filename);
+	for(int i=0;i<words.size();i++)
+	{
+		addWord(i, q);	
+	}
+	cout<<index.size()<<endl;
 	return SUCCESS;
 }
 
-void SimSearcher::readfile(const char *filename)
+void SimSearcher::readFile(const char *filename)
 {
 	ifstream fin(filename);
 	string s;
@@ -27,7 +33,17 @@ void SimSearcher::readfile(const char *filename)
 		words.push_back(s);
 	}
 	fin.close();
-	cout<<words.size();
+}
+
+void SimSearcher::addWord(int n, unsigned q)
+{
+	string a=words[n];
+	for(int i=0;i<=a.size()-q;i++)
+	{
+		string temp = a.substr(i,q);
+		if(index[temp].size() ==0 || index[temp].back() != n)
+			index[temp].push_back(n);
+	}
 }
 
 int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<unsigned, double> > &result)
