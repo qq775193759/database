@@ -9,6 +9,7 @@ using namespace std;
 const int SUCCESS = 0;
 const int FAILURE = 1;
 
+
 class SimSearcher
 {
 public:
@@ -17,7 +18,7 @@ public:
 
 	int createIndex(const char *filename, unsigned q);
 	void readFile(const char *filename);
-	void addWord(int n, unsigned q);
+	void addWord(int n);
 
 	int searchJaccard(const char *query, double threshold, std::vector<std::pair<unsigned, double> > &result);
 	int searchED(const char *query, unsigned threshold, std::vector<std::pair<unsigned, unsigned> > &result);
@@ -28,6 +29,10 @@ public:
 
 	std::vector<string> words;
 	std::map<string, std::vector<int> > index;
+	std::vector<int> short_index;
+	unsigned q;
+	int ed_res;
+	std::vector<std::vector<int> > filter;
 };
 
 

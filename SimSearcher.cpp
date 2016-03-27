@@ -5,7 +5,11 @@
 
 using namespace std;
 
-SimSearcher::SimSearcher()
+//static std::vector<string> global_words;
+//static std::map<string, std::vector<int> > global_index;
+//static std::vector<std::vector<int> > global_filter;
+
+SimSearcher::SimSearcher()//:words(global_words), index(global_index), filter(global_filter)
 {
 }
 
@@ -15,12 +19,12 @@ SimSearcher::~SimSearcher()
 
 int SimSearcher::createIndex(const char *filename, unsigned q)
 {
+	this->q = q;
 	readFile(filename);
-	for(int i=0;i<words.size();i++)
+	/*for(int i=0;i<words.size();i++)
 	{
-		addWord(i, q);	
-	}
-	cout<<index.size()<<endl;
+		addWord(i);
+	}*/
 	return SUCCESS;
 }
 
@@ -28,20 +32,25 @@ void SimSearcher::readFile(const char *filename)
 {
 	ifstream fin(filename);
 	string s;
-	while(fin>>s)
+	while(getline(fin,s))
 	{
 		words.push_back(s);
 	}
 	fin.close();
 }
 
-void SimSearcher::addWord(int n, unsigned q)
+void SimSearcher::addWord(int n)
 {
 	string a=words[n];
+	if(a.size() < q)
+	{
+		short_index.push_back(n);
+		return;
+	}
 	for(int i=0;i<=a.size()-q;i++)
 	{
 		string temp = a.substr(i,q);
-		if(index[temp].size() ==0 || index[temp].back() != n)
+		if(index[temp].empty() || index[temp].back() != n)
 			index[temp].push_back(n);
 	}
 }
@@ -55,6 +64,38 @@ int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<
 int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<unsigned, unsigned> > &result)
 {
 	result.clear();
+	filter.clear();
+	string a(query);
+	/*for(int i=0;i<=a.size()-q;i++)
+	{
+		string temp = a.substr(i,q);
+		if(index.count(temp))
+		{
+			filter.push_back(index[temp]);
+			cout <<temp<<endl;
+		}
+	}
+	for(int i=0;i<filter.size();i++)
+	{
+		for(int j=0;j<filter[i].size();j++)
+			cout<<filter[i][j]<<" ";
+		cout<<endl;
+	}*/
+
+
+	//violence
+	pair<unsigned, unsigned> temp;
+
+	for(int i=0;i<words.size();i++)
+	{
+		if(checkED(a,words[i],threshold))
+		{
+			temp.first = i;
+			temp.second = ed_res;
+			result.push_back(temp);
+		}
+	}
+
 	return SUCCESS;
 }
 
@@ -99,6 +140,7 @@ int SimSearcher::checkED(const string &a, const string &b, int threshold)
     	cout << endl;
     }*/
     if(ed[a_size-1][b_size+threshold-a_size] > threshold) return 0;
+    ed_res = ed[a_size-1][b_size+threshold-a_size];
     return 1;
 }
 
@@ -113,6 +155,7 @@ int SimSearcher::checkED_naive(const string &a, const string &b, int threshold)
 		for(int j=0;j<b.size();j++)
 			ed[i+1][j+1] = min(ed[i][j] + 1 - (a[i] == b[j]), min(ed[i][j+1] + 1, ed[i+1][j] + 1));
 
+	ed_res = ed[a.size()][b.size()];
 	if(ed[a.size()][b.size()] > threshold) return 0;
 	return 1;
 }

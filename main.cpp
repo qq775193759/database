@@ -58,8 +58,8 @@ int main(int argc, char **argv)
 	double jaccardThreshold = 0.85;
 
 	//searcher.createIndex(argv[1], q);
-	searcher.searchJaccard("query", jaccardThreshold, resultJaccard);
-	searcher.searchED("query", edThreshold, resultED);
+	//searcher.searchJaccard("query", jaccardThreshold, resultJaccard);
+	//searcher.searchED("query", edThreshold, resultED);
 
 
 
@@ -86,6 +86,7 @@ int main(int argc, char **argv)
 	}*/
 	//searcher.readFile("input");
 	searcher.createIndex("input", q);
+	searcher.searchED("aaabc", edThreshold, resultED);
 
 	return 0;
 }
