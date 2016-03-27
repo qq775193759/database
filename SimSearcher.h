@@ -26,6 +26,7 @@ public:
 	double checkJaccard(const string &a, const string &b);
 	int checkED(const string &a, const string &b, int threshold);
 	int checkED_naive(const string &a, const string &b, int threshold);
+	int checkED_test(const string &a, const string &b, int threshold);
 
 	std::vector<string> words;
 	std::map<string, std::vector<int> > index;
