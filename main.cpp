@@ -88,6 +88,16 @@ int main(int argc, char **argv)
 	searcher.createIndex("input", q);
 	searcher.searchED("aaabc", edThreshold, resultED);
 
+	std::vector<int> v,w;
+	int a[10]={0,2,4,6,8,10};
+	v.push_back(a[0]);
+	v.push_back(a[1]);
+	v.push_back(a[2]);
+	
+	cout<<*lower_bound(v.begin(), v.end(), 3)<<endl;
+
+	cout<<(v.end() == w.end())<<endl;
+
 	return 0;
 }
 

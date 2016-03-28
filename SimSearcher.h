@@ -2,6 +2,8 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <queue>
+#include <functional>
 #include <utility>
 
 using namespace std;
@@ -26,13 +28,16 @@ public:
 	double checkJaccard(const string &a, const string &b);
 	int checkED(const string &a, const string &b, int threshold);
 	int checkED_naive(const string &a, const string &b, int threshold);
+	void violence(const string &a, unsigned threshold, vector<pair<unsigned, unsigned> > &result);
 
 	std::vector<string> words;
 	std::map<string, std::vector<int> > index;
-	std::vector<int> short_index;
+
 	unsigned q;
 	int ed_res;
-	std::vector<std::vector<int> > filter;
+	vector<vector<int>::iterator> filter;
+	vector<vector<int>::iterator> filter_end;
+	priority_queue<int> heap;
 };
 
 

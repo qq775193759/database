@@ -60,38 +60,35 @@ int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<uns
 {
 	result.clear();
 	filter.clear();
+	filter_end.clear();
+	heap.clear();
 	string a(query);
-	/*for(int i=0;i<=a.size()-q;i++)
+	int min_cross = a.size()-q+1-q*threshold;
+	if(min_cross <= 0)
 	{
-		string temp = a.substr(i,q);
+		violence(a, threshold, result);
+		return SUCCESS;
+	}
+	//heap search
+	//make list
+	string temp;
+	for(int i=0;i<=a.size()-q;i++)
+	{
+		temp = a.substr(i,q);
 		if(index.count(temp))
 		{
-			filter.push_back(index[temp]);
-			cout <<temp<<endl;
+			filter.push_back(index[temp].begin());
+			filter_end.push_back(index[temp].end());
 		}
 	}
-	for(int i=0;i<filter.size();i++)
-	{
-		for(int j=0;j<filter[i].size();j++)
-			cout<<filter[i][j]<<" ";
-		cout<<endl;
-	}*/
+
+
+	
+
 
 
 	//violence
-	pair<unsigned, unsigned> temp;
-
-	for(int i=0;i<words.size();i++)
-	{
-		int delta = abs((int)a.size() - (int)words[i].size());
-		if(delta > (int)threshold)continue;
-		if(checkED(a,words[i],threshold))
-		{
-			temp.first = i;
-			temp.second = ed_res;
-			result.push_back(temp);
-		}
-	}
+	//violence(a, threshold, result);
 
 	return SUCCESS;
 }
@@ -152,4 +149,23 @@ int SimSearcher::checkED_naive(const string &a, const string &b, int threshold)
 	ed_res = ed[a.size()][b.size()];
 	if(ed[a.size()][b.size()] > threshold) return 0;
 	return 1;
+}
+
+
+void SimSearcher::violence(const string &a, unsigned threshold, vector<pair<unsigned, unsigned> > &result)
+{
+	//violence
+	pair<unsigned, unsigned> temp;
+
+	for(int i=0;i<words.size();i++)
+	{
+		int delta = abs((int)a.size() - (int)words[i].size());
+		if(delta > (int)threshold)continue;
+		if(checkED(a,words[i],threshold))
+		{
+			temp.first = i;
+			temp.second = ed_res;
+			result.push_back(temp);
+		}
+	}
 }
