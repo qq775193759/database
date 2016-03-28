@@ -5,11 +5,21 @@
 #include <queue>
 #include <functional>
 #include <utility>
+#include <set>
 
 using namespace std;
 
+const int MAX_THRESHOLD = 2;
+
 const int SUCCESS = 0;
 const int FAILURE = 1;
+
+struct gram_freq
+{
+	int freq;
+	string gram;
+	gram_freq(int f, string s):freq(f), gram(s){}
+};
 
 
 class SimSearcher
@@ -31,13 +41,15 @@ public:
 	void violence(const string &a, unsigned threshold, vector<pair<unsigned, unsigned> > &result);
 
 	std::vector<string> words;
-	std::map<string, std::vector<int> > index;
+	map<string, map<int, vector<int> > > index[MAX_THRESHOLD+1];
 
 	unsigned q;
 	int ed_res;
-	vector<vector<int>::iterator> filter;
-	vector<vector<int>::iterator> filter_end;
-	priority_queue<int> heap;
+	set<int> candidate;
+	//vector<vector<int>::iterator> filter;
+	//vector<vector<int>::iterator> filter_end;
+	//priority_queue<int> heap;
+	//vector<gram_freq> filter;
 };
 
 

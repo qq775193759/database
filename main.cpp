@@ -88,16 +88,16 @@ int main(int argc, char **argv)
 	searcher.createIndex("input", q);
 	searcher.searchED("aaabc", edThreshold, resultED);
 
-	std::vector<int> v,w;
-	int a[10]={0,2,4,6,8,10};
-	v.push_back(a[0]);
-	v.push_back(a[1]);
-	v.push_back(a[2]);
-	
-	cout<<*lower_bound(v.begin(), v.end(), 3)<<endl;
-
-	cout<<(v.end() == w.end())<<endl;
-
+	set<int> meset;
+	meset.insert(1);
+	meset.insert(1);
+	for(int i=100;i<=200;i++)
+		meset.insert(i);
+	cout<<meset.size()<<endl;
+	for(set<int>::iterator it=meset.begin();it!=meset.end();it++)
+	{
+		cout<<*it<<" ";
+	}
 	return 0;
 }
 

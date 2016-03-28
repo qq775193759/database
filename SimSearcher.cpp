@@ -2,12 +2,18 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <algorithm>
 
 using namespace std;
 
 //static std::vector<string> global_words;
 //static std::map<string, std::vector<int> > global_index;
 //static std::vector<std::vector<int> > global_filter;
+
+int compare_gram_freq(gram_freq a, gram_freq b)
+{
+	return a.freq < b.freq;
+}
 
 SimSearcher::SimSearcher()//:words(global_words), index(global_index), filter(global_filter)
 {
@@ -42,11 +48,16 @@ void SimSearcher::readFile(const char *filename)
 void SimSearcher::addWord(int n)
 {
 	string a=words[n];
+	int a_size = a.size();
 	for(int i=0;i<=a.size()-q;i++)
 	{
 		string temp = a.substr(i,q);
-		if(index[temp].empty() || index[temp].back() != n)
-			index[temp].push_back(n);
+		for(int j=0;j<=MAX_THRESHOLD;j++)
+			for(int k=-j;k<=j;k++)
+			{
+				if(index[j][temp][a_size+k].empty() || index[j][temp][a_size+k].back() != n)
+					index[j][temp][a_size+k].push_back(n);
+			}
 	}
 }
 
@@ -59,11 +70,12 @@ int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<
 int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<unsigned, unsigned> > &result)
 {
 	result.clear();
-	filter.clear();
-	filter_end.clear();
-	heap.clear();
+	//filter.clear();
+	candidate.clear();
+
 	string a(query);
-	int min_cross = a.size()-q+1-q*threshold;
+	int a_size = a.size();
+	int min_cross = a_size-q+1-q*threshold;
 	if(min_cross <= 0)
 	{
 		violence(a, threshold, result);
@@ -72,18 +84,28 @@ int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<uns
 	//heap search
 	//make list
 	string temp;
-	for(int i=0;i<=a.size()-q;i++)
+	pair<unsigned, unsigned> temp_pair;
+	//for(int i=0;i<=a.size()-q;i++)
+	for(int i=0;i<=q*threshold;i++)
 	{
 		temp = a.substr(i,q);
-		if(index.count(temp))
+		if(index[threshold].count(temp))
 		{
-			filter.push_back(index[temp].begin());
-			filter_end.push_back(index[temp].end());
+			for(vector<int>::iterator it = index[threshold][temp][a_size].begin();it != index[threshold][temp][a_size].end();it++)
+			{
+				candidate.insert(*it);
+			}
 		}
 	}
-
-
-	
+	for(set<int>::iterator it = candidate.begin();it != candidate.end();it++)
+	{
+		if(checkED(a,words[*it],threshold))
+		{
+			temp_pair.first = *it;
+			temp_pair.second = ed_res;
+			result.push_back(temp_pair);
+		}
+	}
 
 
 
