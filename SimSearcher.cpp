@@ -21,10 +21,10 @@ int SimSearcher::createIndex(const char *filename, unsigned q)
 {
 	this->q = q;
 	readFile(filename);
-	/*for(int i=0;i<words.size();i++)
+	for(int i=0;i<words.size();i++)
 	{
 		addWord(i);
-	}*/
+	}
 	return SUCCESS;
 }
 
@@ -42,11 +42,6 @@ void SimSearcher::readFile(const char *filename)
 void SimSearcher::addWord(int n)
 {
 	string a=words[n];
-	if(a.size() < q)
-	{
-		short_index.push_back(n);
-		return;
-	}
 	for(int i=0;i<=a.size()-q;i++)
 	{
 		string temp = a.substr(i,q);
