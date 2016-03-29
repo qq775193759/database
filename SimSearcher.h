@@ -14,12 +14,6 @@ const int MAX_THRESHOLD = 2;
 const int SUCCESS = 0;
 const int FAILURE = 1;
 
-struct gram_freq
-{
-	int freq;
-	string gram;
-	gram_freq(int f, string s):freq(f), gram(s){}
-};
 
 
 class SimSearcher
@@ -49,7 +43,7 @@ public:
 	//vector<vector<int>::iterator> filter;
 	//vector<vector<int>::iterator> filter_end;
 	//priority_queue<int> heap;
-	vector<gram_freq> len_list;
+	vector<vector<int>*> len_list;
 };
 
 

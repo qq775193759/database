@@ -10,9 +10,11 @@ using namespace std;
 //static std::map<string, std::vector<int> > global_index;
 //static std::vector<std::vector<int> > global_filter;
 
-int compare_gram_freq(gram_freq a, gram_freq b)
+int compare_gram_freq(vector<int> * a, vector<int> * b)
 {
-	return a.freq < b.freq;
+	if(a == 0) return 1;
+	if(b == 0) return 0;
+	return a->size() < b->size();
 }
 
 SimSearcher::SimSearcher()//:words(global_words), index(global_index), filter(global_filter)
@@ -90,18 +92,18 @@ int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<uns
 	for(int i=0;i<=a.size()-q;i++)
 	{
 		temp = a.substr(i,q);
-		len_list.push_back(gram_freq(index[temp][a_size].size(),temp));
+		if(index.count(temp))
+			len_list.push_back(&index[temp][a_size]);
+		else
+			len_list.push_back(0);
 	}
 	sort(len_list.begin(), len_list.end(), compare_gram_freq);
 	for(int i=0;i<=q*threshold;i++)
 	{
-		temp = len_list[i].gram;
-		if(index.count(temp))
+		if(len_list[i] == 0) continue;
+		for(vector<int>::iterator it = len_list[i]->begin();it != len_list[i]->end();it++)
 		{
-			for(vector<int>::iterator it = index[temp][a_size].begin();it != index[temp][a_size].end();it++)
-			{
-				candidate.insert(*it);
-			}
+			candidate.insert(*it);
 		}
 	}
 	for(set<int>::iterator it = candidate.begin();it != candidate.end();it++)
