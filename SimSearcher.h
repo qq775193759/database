@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <map>
+#include <unordered_map>
 #include <string>
 #include <queue>
 #include <functional>
@@ -36,7 +37,7 @@ public:
 
 	std::vector<string> words;
 	//map<string, map<int, vector<int> > > index;
-	map<string, vector<int> > index[262];
+	unordered_map<string, vector<int> > index[262];
 
 	unsigned q;
 	int ed_res;

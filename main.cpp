@@ -91,6 +91,7 @@ int main(int argc, char **argv)
 	/*map<int, vector<int>*> v;
 	v[10] = new vector<int>[100];
 	v[10][10] = 1;*/
+	//hash_map<int, int> hmap;
 	return 0;
 }
 
