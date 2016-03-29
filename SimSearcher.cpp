@@ -29,6 +29,7 @@ int SimSearcher::createIndex(const char *filename, unsigned q)
 	for(int i=0;i<words.size();i++)
 	{
 		addWord(i);
+		addGram(i);
 	}
 	return SUCCESS;
 }
@@ -62,14 +63,68 @@ void SimSearcher::addWord(int n)
 	}
 }
 
+void SimSearcher::addGram(int n)
+{
+	words_set.clear();
+	stringstream ss(words[n]);
+	string temp_gram;
+	while(ss>>temp_gram)
+	{
+		words_set.insert(temp_gram);
+	}
+	int w_size = words_set.size();
+	for(set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
+	{
+		gram_index[w_size][*it].push_back(n);
+	}
+}
+
 int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<unsigned, double> > &result)
 {
 	result.clear();
+	words_set.clear();
+	stringstream ss(query);
+	string temp_gram;
+	while(ss>>temp_gram)
+	{
+		words_set.insert(temp_gram);
+	}
+	int q_size = words_set.size();
+	int min_size = ceil((double)q_size*threshold);
+	int max_size = floor((double)q_size/threshold);
+	pair<unsigned, double> temp_pair;
+	for(int i=min_size;i<=max_size;i++)
+	{
+		result_map.clear();
+		for(set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
+		{
+			vector<int> &temp_v = gram_index[i][*it];
+			for(vector<int>::iterator iter = temp_v.begin(); iter != temp_v.end();iter++)
+			{
+				result_map[*iter]++;
+			}
+		}
+		for(map<int, int>::iterator it=result_map.begin(); it!=result_map.end();it++)
+		{
+			double distance = it->second;
+			distance = distance/(q_size + i - it->second);
+			if(distance > threshold)
+			{
+				temp_pair.first = it->first;
+				temp_pair.second = distance;
+				result.push_back(temp_pair);
+			}
+		}
+	}
+	sort(result.begin(), result.end());
+	
+
 	return SUCCESS;
 }
 
 int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<unsigned, unsigned> > &result)
 {
+	if(threshold > 2) return FAILURE;
 	result.clear();
 	len_list.clear();
 	candidate.clear();

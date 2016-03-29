@@ -7,6 +7,7 @@
 #include <functional>
 #include <utility>
 #include <set>
+#include <sstream>
 
 using namespace std;
 
@@ -26,6 +27,7 @@ public:
 	int createIndex(const char *filename, unsigned q);
 	void readFile(const char *filename);
 	void addWord(int n);
+	void addGram(int n);
 
 	int searchJaccard(const char *query, double threshold, std::vector<std::pair<unsigned, double> > &result);
 	int searchED(const char *query, unsigned threshold, std::vector<std::pair<unsigned, unsigned> > &result);
@@ -35,16 +37,15 @@ public:
 	int checkED_naive(const string &a, const string &b, int threshold);
 	void violence(const string &a, unsigned threshold, vector<pair<unsigned, unsigned> > &result);
 
-	std::vector<string> words;
-	//map<string, map<int, vector<int> > > index;
+	vector<string> words;
 	unordered_map<string, vector<int> > index[262];
+	set<string> words_set;
+	unordered_map<string, vector<int> > gram_index[150];
+	map<int, int> result_map;
 
 	unsigned q;
 	int ed_res;
 	set<int> candidate;
-	//vector<vector<int>::iterator> filter;
-	//vector<vector<int>::iterator> filter_end;
-	//priority_queue<int> heap;
 	vector<vector<int>*> len_list;
 };
 

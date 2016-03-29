@@ -88,10 +88,11 @@ int main(int argc, char **argv)
 	searcher.createIndex("input", q);
 	searcher.searchED("aaabc", edThreshold, resultED);
 
-	/*map<int, vector<int>*> v;
-	v[10] = new vector<int>[100];
-	v[10][10] = 1;*/
-	//hash_map<int, int> hmap;
+	char s[200] = "abc efg hij";
+	string t;
+	stringstream str(s);
+	while(str >> t)
+		{cout<<t<<endl;}
 	return 0;
 }
 
