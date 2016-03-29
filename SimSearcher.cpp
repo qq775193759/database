@@ -6,9 +6,6 @@
 
 using namespace std;
 
-//static std::vector<string> global_words;
-//static std::map<string, std::vector<int> > global_index;
-//static std::vector<std::vector<int> > global_filter;
 
 int compare_gram_freq(vector<int> * a, vector<int> * b)
 {
@@ -17,7 +14,7 @@ int compare_gram_freq(vector<int> * a, vector<int> * b)
 	return a->size() < b->size();
 }
 
-SimSearcher::SimSearcher()//:words(global_words), index(global_index), filter(global_filter)
+SimSearcher::SimSearcher()
 {
 }
 
@@ -58,7 +55,7 @@ void SimSearcher::addWord(int n)
 		int j = MAX_THRESHOLD;
 			for(int k=-j;k<=j;k++)
 			{
-				vector<int> &temp_v = index[temp][a_size+k];
+				vector<int> &temp_v = index[a_size+k][temp];
 				if(temp_v.empty() || temp_v.back() != n)
 					temp_v.push_back(n);
 			}
@@ -92,8 +89,8 @@ int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<uns
 	for(int i=0;i<=a.size()-q;i++)
 	{
 		temp = a.substr(i,q);
-		if(index.count(temp))
-			len_list.push_back(&index[temp][a_size]);
+		if((index[a_size]).count(temp))
+			len_list.push_back(&index[a_size][temp]);
 		else
 			len_list.push_back(0);
 	}

@@ -35,7 +35,8 @@ public:
 	void violence(const string &a, unsigned threshold, vector<pair<unsigned, unsigned> > &result);
 
 	std::vector<string> words;
-	map<string, map<int, vector<int> > > index;
+	//map<string, map<int, vector<int> > > index;
+	map<string, vector<int> > index[262];
 
 	unsigned q;
 	int ed_res;
