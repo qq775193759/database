@@ -56,7 +56,7 @@ void SimSearcher::addWord(int n)
 		int j = MAX_THRESHOLD;
 			for(int k=-j;k<=j;k++)
 			{
-				vector<int> &temp_v = index[j][temp][a_size+k];
+				vector<int> &temp_v = index[temp][a_size+k];
 				if(temp_v.empty() || temp_v.back() != n)
 					temp_v.push_back(n);
 			}
@@ -90,15 +90,15 @@ int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<uns
 	for(int i=0;i<=a.size()-q;i++)
 	{
 		temp = a.substr(i,q);
-		len_list.push_back(gram_freq(index[MAX_THRESHOLD][temp][a_size].size(),temp));
+		len_list.push_back(gram_freq(index[temp][a_size].size(),temp));
 	}
 	sort(len_list.begin(), len_list.end(), compare_gram_freq);
 	for(int i=0;i<=q*threshold;i++)
 	{
 		temp = len_list[i].gram;
-		if(index[MAX_THRESHOLD].count(temp))
+		if(index.count(temp))
 		{
-			for(vector<int>::iterator it = index[MAX_THRESHOLD][temp][a_size].begin();it != index[MAX_THRESHOLD][temp][a_size].end();it++)
+			for(vector<int>::iterator it = index[temp][a_size].begin();it != index[temp][a_size].end();it++)
 			{
 				candidate.insert(*it);
 			}
