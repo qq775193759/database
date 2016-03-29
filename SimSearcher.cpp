@@ -47,16 +47,18 @@ void SimSearcher::readFile(const char *filename)
 
 void SimSearcher::addWord(int n)
 {
-	string a=words[n];
+	string& a=words[n];
 	int a_size = a.size();
 	for(int i=0;i<=a.size()-q;i++)
 	{
 		string temp = a.substr(i,q);
-		for(int j=MAX_THRESHOLD;j<=MAX_THRESHOLD;j++)
+		//for(int j=MAX_THRESHOLD;j<=MAX_THRESHOLD;j++)
+		int j = MAX_THRESHOLD;
 			for(int k=-j;k<=j;k++)
 			{
-				if(index[j][temp][a_size+k].empty() || index[j][temp][a_size+k].back() != n)
-					index[j][temp][a_size+k].push_back(n);
+				vector<int> &temp_v = index[j][temp][a_size+k];
+				if(temp_v.empty() || temp_v.back() != n)
+					temp_v.push_back(n);
 			}
 	}
 }
