@@ -49,7 +49,7 @@ public:
 	//vector<vector<int>::iterator> filter;
 	//vector<vector<int>::iterator> filter_end;
 	//priority_queue<int> heap;
-	//vector<gram_freq> filter;
+	vector<gram_freq> len_list;
 };
 
 

@@ -70,7 +70,7 @@ int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<
 int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<unsigned, unsigned> > &result)
 {
 	result.clear();
-	//filter.clear();
+	len_list.clear();
 	candidate.clear();
 
 	string a(query);
@@ -85,10 +85,15 @@ int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<uns
 	//make list
 	string temp;
 	pair<unsigned, unsigned> temp_pair;
-	//for(int i=0;i<=a.size()-q;i++)
-	for(int i=0;i<=q*threshold;i++)
+	for(int i=0;i<=a.size()-q;i++)
 	{
 		temp = a.substr(i,q);
+		len_list.push_back(gram_freq(index[threshold][temp][a_size].size(),temp));
+	}
+	sort(len_list.begin(), len_list.end(), compare_gram_freq);
+	for(int i=0;i<=q*threshold;i++)
+	{
+		temp = len_list[i].gram;
 		if(index[threshold].count(temp))
 		{
 			for(vector<int>::iterator it = index[threshold][temp][a_size].begin();it != index[threshold][temp][a_size].end();it++)
