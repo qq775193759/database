@@ -103,13 +103,13 @@ int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<
 		for(set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
 		{
 			if(gram_index[i].count(*it)) co++;
-
 		}
 		if(co < temp_min_size) continue;
 		j_candidate.clear();
 		dirty.clear();
 		for(set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
 		{
+			if(gram_index[i].count(*it) == 0) continue;
 			vector<int> &temp_v = gram_index[i][*it];
 			for(vector<int>::iterator iter = temp_v.begin(); iter != temp_v.end();iter++)
 			{
@@ -158,11 +158,12 @@ int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<uns
 	//make list
 	string temp;
 	pair<unsigned, unsigned> temp_pair;
+	unordered_map<string, vector<int> > &index_asize = index[a_size];
 	for(int i=0;i<=a.size()-q;i++)
 	{
 		temp = a.substr(i,q);
-		if((index[a_size]).count(temp))
-			len_list.push_back(&index[a_size][temp]);
+		if(index_asize.count(temp))
+			len_list.push_back(&index_asize[temp]);
 		else
 			len_list.push_back(0);
 	}

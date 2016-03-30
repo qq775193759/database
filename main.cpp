@@ -88,11 +88,9 @@ int main(int argc, char **argv)
 	searcher.createIndex("input", q);
 	searcher.searchED("aaabc", edThreshold, resultED);
 
-	char s[200] = "abc efg hij";
-	string t;
-	stringstream str(s);
-	while(str >> t)
-		{cout<<t<<endl;}
+	map<int, int> m;
+	m[1];
+	cout<<m.count(1)<<endl;
 	return 0;
 }
 
