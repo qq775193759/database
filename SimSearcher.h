@@ -17,7 +17,7 @@ const int MAX_THRESHOLD = 2;
 const int SUCCESS = 0;
 const int FAILURE = 1;
 
-const int J_PARAMETER = 1;
+const double J_PARAMETER = 4.5;
 
 
 

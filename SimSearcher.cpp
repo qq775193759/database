@@ -99,6 +99,7 @@ int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<
 	{
 		int co=0;
 		int temp_min_size =  ceil((q_size + i)*threshold/(1+threshold));
+		int j_parameter_size = ceil(temp_min_size/J_PARAMETER);
 		temp_min_size = max(temp_min_size, min_size);
 		for(unordered_set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
 		{
@@ -114,13 +115,13 @@ int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<
 			co++;
 			if(gram_index[i].count(*it) == 0) continue;
 			vector<int> &temp_v = gram_index[i][*it];
-			if(co <= (q_size - temp_min_size + J_PARAMETER))
+			if(co <= (q_size - temp_min_size + j_parameter_size))
 			{
 				for(vector<int>::iterator iter = temp_v.begin(); iter != temp_v.end();iter++)
 				{
 					(*result_map)[*iter]++;
 					if((*result_map)[*iter] == 1) dirty.push_back(*iter);
-					if((*result_map)[*iter] == J_PARAMETER) j_more_candidate.push_back(*iter);
+					if((*result_map)[*iter] == j_parameter_size) j_more_candidate.push_back(*iter);
 					if((*result_map)[*iter] == temp_min_size) j_candidate.push_back(*iter);
 				}
 			}
