@@ -75,7 +75,7 @@ void SimSearcher::addGram(int n)
 	}
 	//words_set_vector.push_back(words_set);
 	int w_size = words_set.size();
-	for(set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
+	for(unordered_set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
 	{
 		gram_index[w_size][*it].push_back(n);
 	}
@@ -100,14 +100,14 @@ int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<
 		int co=0;
 		int temp_min_size =  ceil((q_size + i)*threshold/(1+threshold));
 		temp_min_size = max(temp_min_size, min_size);
-		for(set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
+		for(unordered_set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
 		{
 			if(gram_index[i].count(*it)) co++;
 		}
 		if(co < temp_min_size) continue;
 		j_candidate.clear();
 		dirty.clear();
-		for(set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
+		for(unordered_set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
 		{
 			if(gram_index[i].count(*it) == 0) continue;
 			vector<int> &temp_v = gram_index[i][*it];
