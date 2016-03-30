@@ -176,7 +176,7 @@ int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<uns
 			candidate.insert(*it);
 		}
 	}
-	for(set<int>::iterator it = candidate.begin();it != candidate.end();it++)
+	for(unordered_set<int>::iterator it = candidate.begin();it != candidate.end();it++)
 	{
 		if(checkED(a,words[*it],threshold))
 		{
@@ -185,6 +185,7 @@ int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<uns
 			result.push_back(temp_pair);
 		}
 	}
+	sort(result.begin(), result.end());
 
 
 

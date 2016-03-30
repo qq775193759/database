@@ -8,6 +8,7 @@
 #include <utility>
 #include <set>
 #include <sstream>
+#include <unordered_set>
 
 using namespace std;
 
@@ -50,7 +51,7 @@ public:
 	//ED
 	unsigned q;
 	int ed_res;
-	set<int> candidate;
+	unordered_set<int> candidate;
 	vector<vector<int>*> len_list;
 };
 
