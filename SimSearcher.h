@@ -41,7 +41,7 @@ public:
 	unordered_map<string, vector<int> > index[262];
 	//Jaccard
 	set<string> words_set;
-	vector<set<string> > words_set_vector;
+	//vector<set<string> > words_set_vector;
 	unordered_map<string, vector<int> > gram_index[160];
 	vector<int> *result_map;
 	vector<int> j_candidate;

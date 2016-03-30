@@ -73,7 +73,7 @@ void SimSearcher::addGram(int n)
 	{
 		words_set.insert(temp_gram);
 	}
-	words_set_vector.push_back(words_set);
+	//words_set_vector.push_back(words_set);
 	int w_size = words_set.size();
 	for(set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
 	{
@@ -98,12 +98,14 @@ int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<
 	for(int i=min_size;i<=max_size;i++)
 	{
 		int co=0;
+		int temp_min_size =  ceil((q_size + i)*threshold/(1+threshold));
+		temp_min_size = max(temp_min_size, min_size);
 		for(set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
 		{
 			if(gram_index[i].count(*it)) co++;
 
 		}
-		if(co < min_size) continue;
+		if(co < temp_min_size) continue;
 		j_candidate.clear();
 		dirty.clear();
 		for(set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
@@ -113,7 +115,7 @@ int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<
 			{
 				(*result_map)[*iter]++;
 				if((*result_map)[*iter] == 1) dirty.push_back(*iter);
-				if((*result_map)[*iter] == min_size) j_candidate.push_back(*iter);
+				if((*result_map)[*iter] == temp_min_size) j_candidate.push_back(*iter);
 			}
 		}
 		for(vector<int>::iterator it=j_candidate.begin(); it!=j_candidate.end();it++)
