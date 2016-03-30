@@ -32,17 +32,22 @@ public:
 	int searchJaccard(const char *query, double threshold, std::vector<std::pair<unsigned, double> > &result);
 	int searchED(const char *query, unsigned threshold, std::vector<std::pair<unsigned, unsigned> > &result);
 
-	double checkJaccard(const string &a, const string &b);
 	int checkED(const string &a, const string &b, int threshold);
 	int checkED_naive(const string &a, const string &b, int threshold);
 	void violence(const string &a, unsigned threshold, vector<pair<unsigned, unsigned> > &result);
+	double checkJaccard(int n);
 
 	vector<string> words;
 	unordered_map<string, vector<int> > index[262];
+	//Jaccard
 	set<string> words_set;
-	unordered_map<string, vector<int> > gram_index[150];
-	map<int, int> result_map;
+	vector<set<string> > words_set_vector;
+	unordered_map<string, vector<int> > gram_index[160];
+	vector<int> *result_map;
+	vector<int> j_candidate;
+	vector<int> dirty;
 
+	//ED
 	unsigned q;
 	int ed_res;
 	set<int> candidate;

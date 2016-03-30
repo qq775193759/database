@@ -31,6 +31,7 @@ int SimSearcher::createIndex(const char *filename, unsigned q)
 		addWord(i);
 		addGram(i);
 	}
+	result_map = new vector<int>(words.size());
 	return SUCCESS;
 }
 
@@ -72,6 +73,7 @@ void SimSearcher::addGram(int n)
 	{
 		words_set.insert(temp_gram);
 	}
+	words_set_vector.push_back(words_set);
 	int w_size = words_set.size();
 	for(set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
 	{
@@ -95,25 +97,39 @@ int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<
 	pair<unsigned, double> temp_pair;
 	for(int i=min_size;i<=max_size;i++)
 	{
-		result_map.clear();
+		int co=0;
+		for(set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
+		{
+			if(gram_index[i].count(*it)) co++;
+
+		}
+		if(co < min_size) continue;
+		j_candidate.clear();
+		dirty.clear();
 		for(set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
 		{
 			vector<int> &temp_v = gram_index[i][*it];
 			for(vector<int>::iterator iter = temp_v.begin(); iter != temp_v.end();iter++)
 			{
-				result_map[*iter]++;
+				(*result_map)[*iter]++;
+				if((*result_map)[*iter] == 1) dirty.push_back(*iter);
+				if((*result_map)[*iter] == min_size) j_candidate.push_back(*iter);
 			}
 		}
-		for(map<int, int>::iterator it=result_map.begin(); it!=result_map.end();it++)
+		for(vector<int>::iterator it=j_candidate.begin(); it!=j_candidate.end();it++)
 		{
-			double distance = it->second;
-			distance = distance/(q_size + i - it->second);
+			double distance = (*result_map)[*it];
+			distance = distance/(q_size + i - distance);
 			if(distance > threshold)
 			{
-				temp_pair.first = it->first;
+				temp_pair.first = *it;
 				temp_pair.second = distance;
 				result.push_back(temp_pair);
 			}
+		}
+		for(vector<int>::iterator it=dirty.begin(); it!=dirty.end();it++)
+		{
+			(*result_map)[*it] = 0;
 		}
 	}
 	sort(result.begin(), result.end());
@@ -124,7 +140,6 @@ int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<
 
 int SimSearcher::searchED(const char *query, unsigned threshold, vector<pair<unsigned, unsigned> > &result)
 {
-	if(threshold > 2) return FAILURE;
 	result.clear();
 	len_list.clear();
 	candidate.clear();
@@ -251,4 +266,8 @@ void SimSearcher::violence(const string &a, unsigned threshold, vector<pair<unsi
 			result.push_back(temp);
 		}
 	}
+}
+
+double SimSearcher::checkJaccard(int n)
+{
 }
