@@ -106,16 +106,34 @@ int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<
 		}
 		if(co < temp_min_size) continue;
 		j_candidate.clear();
+		j_more_candidate.clear();
 		dirty.clear();
+		co = 0;
 		for(unordered_set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
 		{
+			co++;
 			if(gram_index[i].count(*it) == 0) continue;
 			vector<int> &temp_v = gram_index[i][*it];
-			for(vector<int>::iterator iter = temp_v.begin(); iter != temp_v.end();iter++)
+			if(co <= (q_size - temp_min_size + J_PARAMETER))
 			{
-				(*result_map)[*iter]++;
-				if((*result_map)[*iter] == 1) dirty.push_back(*iter);
-				if((*result_map)[*iter] == temp_min_size) j_candidate.push_back(*iter);
+				for(vector<int>::iterator iter = temp_v.begin(); iter != temp_v.end();iter++)
+				{
+					(*result_map)[*iter]++;
+					if((*result_map)[*iter] == 1) dirty.push_back(*iter);
+					if((*result_map)[*iter] == J_PARAMETER) j_more_candidate.push_back(*iter);
+					if((*result_map)[*iter] == temp_min_size) j_candidate.push_back(*iter);
+				}
+			}
+			else
+			{
+				for(vector<int>::iterator iter = j_more_candidate.begin(); iter != j_more_candidate.end();iter++)
+				{
+					if(binary_search(temp_v.begin(), temp_v.end(), *iter))
+					{
+						(*result_map)[*iter]++;
+						if((*result_map)[*iter] == temp_min_size) j_candidate.push_back(*iter);
+					}
+				}
 			}
 		}
 		for(vector<int>::iterator it=j_candidate.begin(); it!=j_candidate.end();it++)

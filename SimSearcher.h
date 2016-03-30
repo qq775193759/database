@@ -17,6 +17,8 @@ const int MAX_THRESHOLD = 2;
 const int SUCCESS = 0;
 const int FAILURE = 1;
 
+const int J_PARAMETER = 1;
+
 
 
 class SimSearcher
@@ -46,6 +48,7 @@ public:
 	unordered_map<string, vector<int> > gram_index[160];
 	vector<int> *result_map;
 	vector<int> j_candidate;
+	vector<int> j_more_candidate;
 	vector<int> dirty;
 
 	//ED
