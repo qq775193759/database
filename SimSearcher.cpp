@@ -94,6 +94,7 @@ int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<
 	int q_size = words_set.size();
 	int min_size = ceil((double)q_size*threshold);
 	int max_size = floor((double)q_size/threshold);
+	max_size = min(256, max_size);
 	pair<unsigned, double> temp_pair;
 	for(int i=min_size;i<=max_size;i++)
 	{
@@ -103,7 +104,7 @@ int SimSearcher::searchJaccard(const char *query, double threshold, vector<pair<
 		temp_min_size = max(temp_min_size, min_size);
 		for(unordered_set<string>::iterator it=words_set.begin(); it!=words_set.end();it++)
 		{
-			if(gram_index[i].count(*it)) co++;
+			if(gram_index[i].find(*it) != gram_index[i].end()) co++;
 		}
 		if(co < temp_min_size) continue;
 		j_candidate.clear();
