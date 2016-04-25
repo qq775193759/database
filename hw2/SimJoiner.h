@@ -61,7 +61,7 @@ public:
     int ed_res;
     int ed_threshold;
     int ed_threshold_plus;
-    unordered_map<string, vector<int> > part_map[260][MAX_T_PLUS_ONE];
+    unordered_map<string, vector<int> > part_map[262][MAX_T_PLUS_ONE];
 
 
     //Jaccard
