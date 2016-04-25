@@ -1,8 +1,4 @@
 #include "SimJoiner.h"
-#include <iostream>
-#include <fstream>
-#include <cmath>
-#include <algorithm>
 
 using namespace std;
 
@@ -37,8 +33,12 @@ int SimJoiner::joinJaccard(const char *filename1, const char *filename2, double 
 }
 
 int SimJoiner::joinED(const char *filename1, const char *filename2, unsigned threshold, vector<EDJoinResult> &result) {
+	ed_threshold = threshold;
+	ed_threshold_plus = threshold+1;
     result.clear();
     readFile(filename1, filename2);
+    build_part_map();
+    //print_part_map();
     return SUCCESS;
 }
 
@@ -81,4 +81,44 @@ int SimJoiner::checkED(const string &a, const string &b, int threshold)
     if(ed[a_size-1][b_size+threshold-a_size] > threshold) return 0;
     ed_res = ed[a_size-1][b_size+threshold-a_size];
     return 1;
+}
+
+void SimJoiner::build_part_map()
+{
+	int part_len;
+	for(int i=0;i<words2.size();i++)
+	{
+		//cout<<words2[i]<<endl;
+		int word_len = words2[i].size();
+		int part_len_base = word_len/ed_threshold_plus;
+		int part_len_rest = word_len - part_len_base*ed_threshold_plus;
+		//cal st_pos and lenth
+		int pos = 0;
+		for(int j=0;j<ed_threshold_plus;j++)
+		{
+			part_len = part_len_base + (j < part_len_rest);
+			part_map[j][words2[i].substr(pos, part_len)].push_back(i);
+			//cout<<words2[i].substr(pos, part_len)<<" ";
+			pos += part_len;
+		}
+		//cout<<endl;
+	}
+}
+
+void SimJoiner::print_part_map()
+{
+	for(int k=0;k<ed_threshold_plus;k++)
+	{
+		for(unordered_map<string, vector<int> >::iterator it=part_map[k].begin();it!=part_map[k].end();it++)
+		{
+			cout<<it->first<<endl;
+			for(int i=0;i<(it->second).size();i++)
+			{
+				cout<<(it->second)[i]<<" ";
+			}
+			cout<<endl;
+		}
+		cout<<endl;
+	}
+	
 }
