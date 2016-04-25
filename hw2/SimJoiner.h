@@ -35,6 +35,31 @@ const int FAILURE = 1;
 
 const int MAX_T_PLUS_ONE = 4;
 
+
+struct Count_set{
+	vector<int> *co;
+	vector<int> dirty;
+	void set_size(int n)
+	{
+		co = new vector<int>(n);
+	}
+	void clear()
+	{
+		for(int i=0;i<dirty.size();i++)
+		{
+			(*co)[i] = 0;
+		}
+		dirty.clear();
+	}
+	void add(int n)
+	{
+		if((*co)[n]) return;
+		(*co)[n] = 1;
+		dirty.push_back(n);
+	}
+};
+
+
 class SimJoiner {
 public:
     SimJoiner();
@@ -62,6 +87,7 @@ public:
     int ed_threshold;
     int ed_threshold_plus;
     unordered_map<string, vector<int> > part_map[262][MAX_T_PLUS_ONE];
+    Count_set ed_candidate_set;
 
 
     //Jaccard

@@ -49,6 +49,7 @@ int SimJoiner::joinED(const char *filename1, const char *filename2, unsigned thr
 	ed_threshold_plus = threshold+1;
     result.clear();
     readFile(filename1, filename2);
+    ed_candidate_set.set_size(words2.size());
     build_part_map();
     //print_part_map();
     for(int i=0;i<words1.size();i++)
@@ -56,7 +57,8 @@ int SimJoiner::joinED(const char *filename1, const char *filename2, unsigned thr
     	add_ed_res(i, result);
     }
 
-    sort(result.begin(), result.end(), ed_res_cmp);
+    cout<<result.size()<<endl;
+
     for(int i=0;i<result.size();i++)
     {
     	cout<<words1[result[i].id1]<<"   "<<words2[result[i].id2]<<endl;
@@ -147,6 +149,7 @@ void SimJoiner::print_part_map()
 
 void SimJoiner::add_ed_res(int n, vector<EDJoinResult> &result)
 {
+	ed_candidate_set.clear();
 	vector<EDJoinResult> temp_result;
 	EDJoinResult temp_res;
 	temp_res.id1 = n;
@@ -168,14 +171,36 @@ void SimJoiner::add_ed_res(int n, vector<EDJoinResult> &result)
 			for(int i=max(0,pos - ed_threshold);i<=min(query_len - part_len,pos + ed_threshold);i++)
 			{
 				string temp_s = words1[n].substr(i, part_len);
+				cout<<temp_s<<endl;
 				if(temp_map.find(temp_s) != temp_map.end())
 				{
 					//add candidate
+					vector<int>& temp_vector = temp_map[temp_s];
+					for(int j=0;j<temp_vector.size();j++)
+					{
+						ed_candidate_set.add(temp_vector[j]);
+					}
 				}
 			}
 			pos += part_len;
 		}
 	}
+
+
+	for(int i=0;i<ed_candidate_set.dirty.size();i++)
+	{
+		int index_rank = ed_candidate_set.dirty[i];
+		if(checkED(words1[n], words2[index_rank], ed_threshold))
+		{
+			temp_res.id2 = index_rank;
+			temp_res.s = ed_res;
+			temp_result.push_back(temp_res);
+		}
+	}
+
+	sort(temp_result.begin(), temp_result.end(), ed_res_cmp);
+
+	cout<<n<<" "<<temp_result.size()<<" "<<ed_candidate_set.dirty.size()<<endl;
 
 
 	for(int i=0;i<temp_result.size();i++)
