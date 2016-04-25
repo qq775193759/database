@@ -49,6 +49,7 @@ public:
     int checkED(const string &a, const string &b, int threshold);
     void build_part_map();
     void print_part_map();
+    void add_ed_res(int n, std::vector<EDJoinResult> &result);
 
     //Jaccard method
 
@@ -60,7 +61,7 @@ public:
     int ed_res;
     int ed_threshold;
     int ed_threshold_plus;
-    unordered_map<string, vector<int> > part_map[MAX_T_PLUS_ONE];
+    unordered_map<string, vector<int> > part_map[260][MAX_T_PLUS_ONE];
 
 
     //Jaccard

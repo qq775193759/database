@@ -2,6 +2,18 @@
 
 using namespace std;
 
+int ed_res_cmp(const EDJoinResult& a, const EDJoinResult b)
+{
+	if(a.id1 == b.id1) return a.id2 < b.id2;
+	return a.id1 < b.id1;
+}
+
+int j_res_cmp(const JaccardJoinResult& a, const JaccardJoinResult b)
+{
+	if(a.id1 == b.id1) return a.id2 < b.id2;
+	return a.id1 < b.id1;
+}
+
 SimJoiner::SimJoiner() {
 }
 
@@ -39,6 +51,12 @@ int SimJoiner::joinED(const char *filename1, const char *filename2, unsigned thr
     readFile(filename1, filename2);
     build_part_map();
     //print_part_map();
+    for(int i=0;i<words1.size();i++)
+    {
+    	add_ed_res(i, result);
+    }
+
+    sort(result.begin(), result.end(), ed_res_cmp);
     return SUCCESS;
 }
 
@@ -97,7 +115,7 @@ void SimJoiner::build_part_map()
 		for(int j=0;j<ed_threshold_plus;j++)
 		{
 			part_len = part_len_base + (j < part_len_rest);
-			part_map[j][words2[i].substr(pos, part_len)].push_back(i);
+			part_map[word_len][j][words2[i].substr(pos, part_len)].push_back(i);
 			//cout<<words2[i].substr(pos, part_len)<<" ";
 			pos += part_len;
 		}
@@ -109,7 +127,7 @@ void SimJoiner::print_part_map()
 {
 	for(int k=0;k<ed_threshold_plus;k++)
 	{
-		for(unordered_map<string, vector<int> >::iterator it=part_map[k].begin();it!=part_map[k].end();it++)
+		for(unordered_map<string, vector<int> >::iterator it=part_map[7][k].begin();it!=part_map[7][k].end();it++)
 		{
 			cout<<it->first<<endl;
 			for(int i=0;i<(it->second).size();i++)
@@ -121,4 +139,13 @@ void SimJoiner::print_part_map()
 		cout<<endl;
 	}
 	
+}
+
+void SimJoiner::add_ed_res(int n, std::vector<EDJoinResult> &result)
+{
+	EDJoinResult temp_res;
+	temp_res.id1 = n;
+	temp_res.id2 = 1;
+	temp_res.s =1;
+	result.push_back(temp_res);
 }
