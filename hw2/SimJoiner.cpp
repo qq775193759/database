@@ -57,7 +57,6 @@ int SimJoiner::joinED(const char *filename1, const char *filename2, unsigned thr
     	add_ed_res(i, result);
     }
 
-    cout<<result.size()<<endl;
 
     for(int i=0;i<result.size();i++)
     {
@@ -122,7 +121,7 @@ void SimJoiner::build_part_map()
 		{
 			part_len = part_len_base + (j < part_len_rest);
 			part_map[word_len][j][words2[i].substr(pos, part_len)].push_back(i);
-			//cout<<words2[i].substr(pos, part_len)<<" ";
+			//cout<<word_len<<" "<<j<<" "<<words2[i].substr(pos, part_len)<<endl;
 			pos += part_len;
 		}
 		//cout<<endl;
@@ -166,12 +165,12 @@ void SimJoiner::add_ed_res(int n, vector<EDJoinResult> &result)
 		for(int part = 0;part < ed_threshold_plus;part++)
 		{
 			part_len = part_len_base + (part < part_len_rest);
-			unordered_map<string, vector<int> >& temp_map = part_map[part_len][part];
+			unordered_map<string, vector<int> >& temp_map = part_map[word_len][part];
+			//cout<<word_len<<" "<<part<<" "<<temp_map.size()<<endl;
 			//from map to find candidate
 			for(int i=max(0,pos - ed_threshold);i<=min(query_len - part_len,pos + ed_threshold);i++)
 			{
 				string temp_s = words1[n].substr(i, part_len);
-				cout<<temp_s<<endl;
 				if(temp_map.find(temp_s) != temp_map.end())
 				{
 					//add candidate
@@ -200,7 +199,7 @@ void SimJoiner::add_ed_res(int n, vector<EDJoinResult> &result)
 
 	sort(temp_result.begin(), temp_result.end(), ed_res_cmp);
 
-	cout<<n<<" "<<temp_result.size()<<" "<<ed_candidate_set.dirty.size()<<endl;
+	//cout<<n<<" "<<temp_result.size()<<" "<<ed_candidate_set.dirty.size()<<endl;
 
 
 	for(int i=0;i<temp_result.size();i++)

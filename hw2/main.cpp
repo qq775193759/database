@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
     /*joiner.joinJaccard(argv[1], argv[2], jaccardThreshold, resultJaccard);
     joiner.joinED(argv[1], argv[2], edThreshold, resultED);*/
 
-    joiner.joinED("input", "input2", edThreshold, resultED);
+    joiner.joinED("input_long", "input2_long", edThreshold, resultED);
 
     return 0;
 }
