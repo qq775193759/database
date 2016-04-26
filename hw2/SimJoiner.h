@@ -1,7 +1,6 @@
 #ifndef __EXP2_SIMJOINER_H__
 #define __EXP2_SIMJOINER_H__
 
-#include <vector>
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -47,7 +46,7 @@ struct Count_set{
 	{
 		for(int i=0;i<dirty.size();i++)
 		{
-			(*co)[i] = 0;
+			(*co)[dirty[i]] = 0;
 		}
 		dirty.clear();
 	}
