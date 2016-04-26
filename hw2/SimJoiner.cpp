@@ -168,7 +168,7 @@ void SimJoiner::add_ed_res(int n, vector<EDJoinResult> &result)
 			unordered_map<string, vector<int> >& temp_map = part_map[word_len][part];
 			//cout<<word_len<<" "<<part<<" "<<temp_map.size()<<endl;
 			//from map to find candidate
-			for(int i=max(0,pos - ed_threshold);i<=min(query_len - part_len,pos + ed_threshold);i++)
+			for(int i=max(0,pos - (ed_threshold + delta)/2);i<=min(query_len - part_len,pos + (ed_threshold - delta)/2);i++)
 			{
 				string temp_s = words1[n].substr(i, part_len);
 				//cout << temp_s <<endl;
