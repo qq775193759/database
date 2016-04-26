@@ -50,13 +50,71 @@ struct Count_set{
 		}
 		dirty.clear();
 	}
-	void add(int n)
+	virtual void add(int n)
 	{
 		if((*co)[n]) return;
 		(*co)[n] = 1;
 		dirty.push_back(n);
 	}
 };
+
+struct j_Count_set:public Count_set{
+    void add(int n)
+    {
+        if((*co)[n])
+        {
+            (*co)[n]++;
+        }
+        else
+        {
+            (*co)[n] = 1;
+            dirty.push_back(n);
+        }
+    }
+};
+
+struct StrIndex
+{
+    unordered_map<string, int> str_index_map;
+    //vector<int> freq;
+    int co;
+    StrIndex():co(-1){}
+    int to_int(string& s)
+    {
+        unordered_map<string, int>::iterator it = str_index_map.find(s);
+        if(it != str_index_map.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            co++;
+            str_index_map[s] = co;
+            //freq.push_back(0);
+            return co;
+        }
+    }
+    /*int add(string& s)
+    {
+        int res = to_int(s);
+        freq[res]++;
+        return res;
+    }*/
+    int find(string& s)
+    {
+        unordered_map<string, int>::iterator it = str_index_map.find(s);
+        if(it != str_index_map.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+};
+
+
 
 
 class SimJoiner {
@@ -76,6 +134,8 @@ public:
     void add_ed_res(int n, std::vector<EDJoinResult> &result);
 
     //Jaccard method
+    void addGram(int n);
+    void add_ed_res(int n, std::vector<JaccardJoinResult> &result);
 
 
     vector<string> words1;
@@ -91,6 +151,8 @@ public:
 
     //Jaccard
     double j_threshold;
+    StrIndex j_str_index;
+    unordered_map<int, vector<int> > gram_index[257];
 };
 
 #endif

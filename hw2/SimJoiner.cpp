@@ -40,7 +40,17 @@ void SimJoiner::readFile(const char *filename1, const char *filename2)
 }
 
 int SimJoiner::joinJaccard(const char *filename1, const char *filename2, double threshold, vector<JaccardJoinResult> &result) {
+    j_threshold = threshold;
     result.clear();
+    readFile(filename1, filename2);
+    for(int i=0;i<words2.size();i++)
+    {
+    	addGram(i);
+    }
+    for(int i=0;i<words1.size();i++)
+    {
+    	add_ed_res(i, result);
+    }
     return SUCCESS;
 }
 
@@ -199,4 +209,24 @@ void SimJoiner::add_ed_res(int n, vector<EDJoinResult> &result)
 		result.push_back(temp_result[i]);
 	}
 	
+}
+
+void SimJoiner::addGram(int n)
+{
+	stringstream ss(words2[n]);
+	string temp_gram;
+	unordered_set<int> words_set;
+	while(ss>>temp_gram)
+	{
+		words_set.insert(j_str_index.to_int(temp_gram));
+	}
+	int w_size = words_set.size();
+	for(unordered_set<int>::iterator it=words_set.begin(); it!=words_set.end();it++)
+	{
+		gram_index[w_size][*it].push_back(n);
+	}
+}
+
+void SimJoiner::add_ed_res(int n, vector<JaccardJoinResult> &result)
+{
 }
