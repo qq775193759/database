@@ -135,7 +135,7 @@ public:
 
     //Jaccard method
     void addGram(int n);
-    void add_ed_res(int n, std::vector<JaccardJoinResult> &result);
+    void add_j_res(int n, std::vector<JaccardJoinResult> &result);
 
 
     vector<string> words1;
