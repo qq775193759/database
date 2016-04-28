@@ -226,7 +226,7 @@ void SimJoiner::addGram(int n)
 	unordered_set<int> words_set;
 	while(ss>>temp_gram)
 	{
-		words_set.insert(j_str_index.to_int(temp_gram));
+		words_set.insert(j_str_index.add(temp_gram));
 	}
 	int w_size = words_set.size();
 	for(unordered_set<int>::iterator it=words_set.begin(); it!=words_set.end();it++)
@@ -273,14 +273,34 @@ void SimJoiner::add_j_res(int n, vector<JaccardJoinResult> &result)
 		if(co < temp_min_size) continue;
 		//do something
 		j_candidate_set.clear(temp_min_size);
+		co = 0;
 		for(vector<int>::iterator it=words_vector.begin(); it!=words_vector.end();it++)
 		{
+			co++;
 			if(gram_index[i].find(*it) == gram_index[i].end()) continue;
 			vector<int> &temp_v = gram_index[i][*it];
 			for(int j=0;j<temp_v.size();j++)
 			{
 				j_candidate_set.add(temp_v[j]);
 			}
+			/*if(co <= (q_size - temp_min_size + 1))
+			{
+				for(int j=0;j<temp_v.size();j++)
+				{
+					j_candidate_set.add(temp_v[j]);
+				}
+			}
+			else
+			{
+				for(vector<int>::iterator iter = j_candidate_set.dirty.begin(); iter != j_candidate_set.dirty.end();iter++)
+				{
+					if(binary_search(temp_v.begin(), temp_v.end(), *iter))
+					{
+						j_candidate_set.add(*iter);
+					}
+				}
+			}*/
+			
 		}
 		for(int j=0;j<j_candidate_set.candidate.size();j++)
 		{
