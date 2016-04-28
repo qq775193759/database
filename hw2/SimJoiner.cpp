@@ -14,6 +14,11 @@ int j_res_cmp(const JaccardJoinResult& a, const JaccardJoinResult b)
 	return a.id1 < b.id1;
 }
 
+int freq_cmp(const int&a, const int &b)
+{
+	return a<b;
+}
+
 SimJoiner::SimJoiner() {
 }
 
@@ -239,12 +244,18 @@ void SimJoiner::add_j_res(int n, vector<JaccardJoinResult> &result)
 	stringstream ss(words1[n]);
 	string temp_gram;
 	unordered_set<int> words_set;
+	vector<int> words_vector;
 	while(ss>>temp_gram)
 	{
 		int find_res = j_str_index.find(temp_gram);
 		if(find_res != -1) words_set.insert(find_res);
 	}
-	int q_size = words_set.size();
+	for(unordered_set<int>::iterator it=words_set.begin(); it!=words_set.end();it++)
+	{
+		words_vector.push_back(*it);
+	}
+	sort(words_vector.begin(), words_vector.end(), freq_cmp);
+	int q_size = words_vector.size();
 	int min_size = ceil((double)q_size*j_threshold);
 	int max_size = floor((double)q_size/j_threshold);
 	max_size = min(256, max_size);
@@ -255,14 +266,14 @@ void SimJoiner::add_j_res(int n, vector<JaccardJoinResult> &result)
 		int temp_min_size =  ceil((q_size + i)*j_threshold/(1+j_threshold));
 		//int j_parameter_size = ceil(temp_min_size/J_PARAMETER);
 		temp_min_size = max(temp_min_size, min_size);
-		for(unordered_set<int>::iterator it=words_set.begin(); it!=words_set.end();it++)
+		for(vector<int>::iterator it=words_vector.begin(); it!=words_vector.end();it++)
 		{
 			if(gram_index[i].find(*it) != gram_index[i].end()) co++;
 		}
 		if(co < temp_min_size) continue;
 		//do something
 		j_candidate_set.clear(temp_min_size);
-		for(unordered_set<int>::iterator it=words_set.begin(); it!=words_set.end();it++)
+		for(vector<int>::iterator it=words_vector.begin(); it!=words_vector.end();it++)
 		{
 			if(gram_index[i].find(*it) == gram_index[i].end()) continue;
 			vector<int> &temp_v = gram_index[i][*it];
