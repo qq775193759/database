@@ -43,6 +43,7 @@ int SimJoiner::joinJaccard(const char *filename1, const char *filename2, double 
     j_threshold = threshold;
     result.clear();
     readFile(filename1, filename2);
+    j_candidate_set.set_size(words2.size());
     for(int i=0;i<words2.size();i++)
     {
     	addGram(i);
@@ -231,6 +232,10 @@ void SimJoiner::addGram(int n)
 
 void SimJoiner::add_j_res(int n, vector<JaccardJoinResult> &result)
 {
+	vector<JaccardJoinResult> temp_result;
+	JaccardJoinResult temp_res;
+	temp_res.id1 = n;
+	//begin to find
 	stringstream ss(words1[n]);
 	string temp_gram;
 	unordered_set<int> words_set;
@@ -240,4 +245,48 @@ void SimJoiner::add_j_res(int n, vector<JaccardJoinResult> &result)
 		if(find_res != -1) words_set.insert(find_res);
 	}
 	int q_size = words_set.size();
+	int min_size = ceil((double)q_size*j_threshold);
+	int max_size = floor((double)q_size/j_threshold);
+	max_size = min(256, max_size);
+
+	for(int i=min_size;i<=max_size;i++)
+	{
+		int co=0;
+		int temp_min_size =  ceil((q_size + i)*j_threshold/(1+j_threshold));
+		//int j_parameter_size = ceil(temp_min_size/J_PARAMETER);
+		temp_min_size = max(temp_min_size, min_size);
+		for(unordered_set<int>::iterator it=words_set.begin(); it!=words_set.end();it++)
+		{
+			if(gram_index[i].find(*it) != gram_index[i].end()) co++;
+		}
+		if(co < temp_min_size) continue;
+		//do something
+		j_candidate_set.clear(temp_min_size);
+		for(unordered_set<int>::iterator it=words_set.begin(); it!=words_set.end();it++)
+		{
+			if(gram_index[i].find(*it) == gram_index[i].end()) continue;
+			vector<int> &temp_v = gram_index[i][*it];
+			for(int j=0;j<temp_v.size();j++)
+			{
+				j_candidate_set.add(temp_v[j]);
+			}
+		}
+		for(int j=0;j<j_candidate_set.candidate.size();j++)
+		{
+			int temp_rank = j_candidate_set.candidate[j];
+			double distance = (*j_candidate_set.co)[temp_rank];
+			distance = distance/(q_size + i - distance);
+			if(distance > j_threshold)
+			{
+				temp_res.id2 = temp_rank;
+				temp_res.s = distance;
+				temp_result.push_back(temp_res);
+			}
+		}
+	}
+	sort(temp_result.begin(), temp_result.end(), j_res_cmp);
+	for(int i=0;i<temp_result.size();i++)
+	{
+		result.push_back(temp_result[i]);
+	}
 }

@@ -50,7 +50,7 @@ struct Count_set{
 		}
 		dirty.clear();
 	}
-	virtual void add(int n)
+	void add(int n)
 	{
 		if((*co)[n]) return;
 		(*co)[n] = 1;
@@ -58,7 +58,25 @@ struct Count_set{
 	}
 };
 
-struct j_Count_set:public Count_set{
+struct j_Count_set{
+    vector<int> *co;
+    vector<int> dirty;
+    vector<int> candidate;
+    int min_size;
+    void set_size(int n)
+    {
+        co = new vector<int>(n);
+    }
+    void clear(int n)
+    {
+        min_size = n;
+        for(int i=0;i<dirty.size();i++)
+        {
+            (*co)[dirty[i]] = 0;
+        }
+        dirty.clear();
+        candidate.clear();
+    }
     void add(int n)
     {
         if((*co)[n])
@@ -70,6 +88,7 @@ struct j_Count_set:public Count_set{
             (*co)[n] = 1;
             dirty.push_back(n);
         }
+        if((*co)[n] == min_size) candidate.push_back(n);
     }
 };
 
@@ -153,6 +172,7 @@ public:
     double j_threshold;
     StrIndex j_str_index;
     unordered_map<int, vector<int> > gram_index[257];
+    j_Count_set j_candidate_set;
 };
 
 #endif
