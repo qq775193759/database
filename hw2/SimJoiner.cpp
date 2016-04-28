@@ -14,9 +14,11 @@ int j_res_cmp(const JaccardJoinResult& a, const JaccardJoinResult b)
 	return a.id1 < b.id1;
 }
 
+vector<int> StrIndex::freq;
+
 int freq_cmp(const int&a, const int &b)
 {
-	return a<b;
+	return StrIndex::freq[a]<StrIndex::freq[b];
 }
 
 SimJoiner::SimJoiner() {

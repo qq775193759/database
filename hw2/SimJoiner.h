@@ -95,7 +95,7 @@ struct j_Count_set{
 struct StrIndex
 {
     unordered_map<string, int> str_index_map;
-    vector<int> freq;
+    static vector<int> freq;
     int co;
     StrIndex():co(-1){}
     int to_int(string& s)
