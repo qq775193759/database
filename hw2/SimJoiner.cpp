@@ -281,11 +281,11 @@ void SimJoiner::add_j_res(int n, vector<JaccardJoinResult> &result)
 			co++;
 			if(gram_index[i].find(*it) == gram_index[i].end()) continue;
 			vector<int> &temp_v = gram_index[i][*it];
-			for(int j=0;j<temp_v.size();j++)
+			/*for(int j=0;j<temp_v.size();j++)
 			{
 				j_candidate_set.add(temp_v[j]);
-			}
-			/*if(co <= (q_size - temp_min_size + 1))
+			}*/
+			if(co <= (q_size - temp_min_size + 1))
 			{
 				for(int j=0;j<temp_v.size();j++)
 				{
@@ -301,7 +301,7 @@ void SimJoiner::add_j_res(int n, vector<JaccardJoinResult> &result)
 						j_candidate_set.add(*iter);
 					}
 				}
-			}*/
+			}
 			
 		}
 		for(int j=0;j<j_candidate_set.candidate.size();j++)
