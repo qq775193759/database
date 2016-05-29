@@ -71,10 +71,9 @@ public:
     int checkED(const string &a, const string &b, int threshold);
     void build_part_map();
     void print_part_map();
-    void add_ed_res(int n, std::vector<EDExtractResult> &result);
+    void add_ed_res(string &str, int pos, int len, std::vector<EDExtractResult> &result);
+    void print_all(vector<EDExtractResult> &result);
 
-
-    vector<string> words1;
     vector<string> words2;
     int max_len;
     int min_len;

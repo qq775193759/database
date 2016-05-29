@@ -33,6 +33,7 @@ int AEE::createIndex(const char *entity_file_name) {
     fin.close();
 
     build_part_map();
+    ed_candidate_set.set_size(words2.size());
     //print_part_map();
     return SUCCESS;
 }
@@ -40,6 +41,18 @@ int AEE::createIndex(const char *entity_file_name) {
 int AEE::aeeJaccard(const char *document, double threshold, vector<JaccardExtractResult> &result) {
     result.clear();
     return SUCCESS;
+}
+
+void AEE::print_all(vector<EDExtractResult> &result)
+{
+    for(int i=0;i<result.size();i++)
+    {
+        cout<<result[i].id<<" ";
+        cout<<result[i].pos<<" ";
+        cout<<result[i].len<<" ";
+        cout<<result[i].sim<<" ";
+        cout<<endl;
+    }
 }
 
 int AEE::aeeED(const char *document, unsigned threshold, vector<EDExtractResult> &result) {
@@ -51,8 +64,11 @@ int AEE::aeeED(const char *document, unsigned threshold, vector<EDExtractResult>
         for(int j=0;j <= (doc_size-i);j++)
         {
             string temp = doc.substr(j,i);
+            add_ed_res(temp, j, i, result);
         }
     }
+    sort(result.begin(), result.end(), ed_res_cmp);
+    //print_all(result);
     return SUCCESS;
 }
 
@@ -135,14 +151,15 @@ void AEE::print_part_map()
     
 }
 
-void AEE::add_ed_res(int n, vector<EDExtractResult> &result)
+void AEE::add_ed_res(string &str, int pos, int len, vector<EDExtractResult> &result)
 {
     ed_candidate_set.clear();
-    vector<EDExtractResult> temp_result;
     EDExtractResult temp_res;
+    temp_res.pos = pos;
+    temp_res.len = len;
 
     //from part_map get candidate
-    int query_len = words1[n].size();
+    int query_len = str.size();
     int part_len;
     for(int delta = -ed_threshold;delta <= ed_threshold;delta++)
     {
@@ -159,7 +176,7 @@ void AEE::add_ed_res(int n, vector<EDExtractResult> &result)
             for(int i=max(0,max(pos - part, pos - delta - ed_threshold + part));
                 i<=min(query_len - part_len,min(pos + part, pos - delta + ed_threshold - part));i++)
             {
-                string temp_s = words1[n].substr(i, part_len);
+                string temp_s = str.substr(i, part_len);
                 if(temp_map.find(temp_s) != temp_map.end())
                 {
                     //add candidate
@@ -178,21 +195,12 @@ void AEE::add_ed_res(int n, vector<EDExtractResult> &result)
     for(int i=0;i<ed_candidate_set.dirty.size();i++)
     {
         int index_rank = ed_candidate_set.dirty[i];
-        if(checkED(words1[n], words2[index_rank], ed_threshold))
+        if(checkED(str, words2[index_rank], ed_threshold))
         {
             temp_res.id = index_rank;
             temp_res.sim = ed_res;
-            temp_result.push_back(temp_res);
+            result.push_back(temp_res);
         }
-    }
-
-    sort(temp_result.begin(), temp_result.end(), ed_res_cmp);
-
-
-
-    for(int i=0;i<temp_result.size();i++)
-    {
-        result.push_back(temp_result[i]);
     }
     
 }
