@@ -16,24 +16,43 @@ AEE::~AEE() {
 }
 
 int AEE::createIndex(const char *entity_file_name) {
+    words2.clear();
+    ed_threshold = 2;
+    ed_threshold_plus = 3;
+    min_len = 10000;
+    max_len = 0;
+    string s;
+    ifstream fin(entity_file_name);
+    while(getline(fin,s))
+    {
+        words2.push_back(s);
+        int s_size = s.size();
+        min_len = min(min_len, s_size);
+        max_len = max(max_len, s_size);
+    }
+    fin.close();
+
+    build_part_map();
+    //print_part_map();
     return SUCCESS;
 }
 
 int AEE::aeeJaccard(const char *document, double threshold, vector<JaccardExtractResult> &result) {
     result.clear();
-    string doc(document);
-    for(int i=min_len - ed_threshold;i<=max_len + ed_threshold;i++)
-    {
-        for(int j=0;j<doc.size()-i;j++)
-        {
-            string temp = doc.substr(j,i);
-        }
-    }
     return SUCCESS;
 }
 
 int AEE::aeeED(const char *document, unsigned threshold, vector<EDExtractResult> &result) {
     result.clear();
+    string doc(document);
+    int doc_size = doc.size();
+    for(int i=max(0, min_len - ed_threshold);i<=max_len + ed_threshold;i++)
+    {
+        for(int j=0;j <= (doc_size-i);j++)
+        {
+            string temp = doc.substr(j,i);
+        }
+    }
     return SUCCESS;
 }
 

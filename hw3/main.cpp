@@ -11,9 +11,8 @@ int main(int argc, char **argv) {
     unsigned edThreshold = 2;
     double jaccardThreshold = 0.85;
 
-    aee.createIndex(argv[1]);
-    aee.aeeJaccard(argv[2], jaccardThreshold, resultJaccard);
-    aee.aeeED(argv[2], edThreshold, resultED);
+    aee.createIndex("entity");
+    aee.aeeED("123456789abcdefgh", edThreshold, resultED);
 
     return 0;
 }
