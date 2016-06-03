@@ -1,15 +1,34 @@
-def add(file, list, output, no):
+def add(file, output, no):
     while 1:
         line = file.readline()
         if not line:
             break
         a = line.split(',')
-        output.write(str(int(a[0])+10000*no))
+        next_no = int(a[0])+no
+        output.write(str(next_no))
         output.write(' ')
         output.write(a[2].replace('.',''))
         output.write(' ')
         output.write(a[3].replace('.',''))
         output.write('\n')
+    return next_no
+        
+def add_some(file, output, no, num):
+    while 1:
+        line = file.readline()
+        if not line:
+            break
+        a = line.split(',')
+        next_no = int(a[0])+no
+        if num == next_no:
+            break;
+        output.write(str(next_no))
+        output.write(' ')
+        output.write(a[2].replace('.',''))
+        output.write(' ')
+        output.write(a[3].replace('.',''))
+        output.write('\n')
+    return next_no
     
 
 def read():
@@ -17,10 +36,15 @@ def read():
     file2 = open('output_0502.dat.plain.txt','r')
     file3 = open('output_0503.dat.plain.txt','r')
     file = open('output_all.dat.plain.txt','w')
-    list = []
-    add(file1, list, file, 0)
-    add(file2, list, file, 1)
-    add(file3, list, file, 2)
+    next = add(file1, file, -1)
+    next = add(file2, file, next)
+    add(file3, file, next)
+    
+    
+def read_test():
+    file1 = open('output_0501.dat.plain.txt','r')
+    file = open('output_test.dat.plain.txt','w')
+    add_some(file1, file, -1, 1000)
     
     
 def check():

@@ -5,5 +5,5 @@ using namespace std;
 int main()
 {
     Space space;
-    space.addFile("output_all.dat.plain.txt");
+    space.addFile("output_test.dat.plain.txt");
 }
