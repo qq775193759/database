@@ -17,6 +17,7 @@ struct Point
 struct Track
 {
     vector<int> points;
+    void add(int x){points.push_back(x);}
 };
 
 struct Range

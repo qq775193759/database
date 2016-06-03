@@ -21,14 +21,16 @@ void Space::addFile(const char* filename)
         global_points.push_back(p);
     }
     cout<<"end:readfile  all points: "<<global_points.size()<<endl;
+    vector<Track> temp_track(no+1);
+    global_tracks = temp_track;
     fin.close();
 }
 
 void Space::buildTrack()
 {
-    for(auto it=global_points.begin();it!=global_points.end();i++)
+    for(int i=0;i<global_points.size();i++)
     {
-        it->no;
+        global_tracks[global_points[i].no].add(i);
     }
 }
 
