@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
 
 using namespace std;
 
@@ -9,8 +8,8 @@ const int RANGE_Y = 100;
 
 struct Point
 {
-    double x;
-    double y;
+    int x;
+    int y;
 };
 
 struct Track

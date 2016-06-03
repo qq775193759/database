@@ -22,18 +22,22 @@ def read():
     add(file2, list, file, 1)
     add(file3, list, file, 2)
     
-file = open('output_all.dat.plain.txt','r')
-while 1:
-    line = file.readline()
-    if not line:
-        break
-    a = line.split(' ')
-    if(len(a[1]) != 8):
-        print a[0]
-        print a[1]
-    if(len(a[2]) != 10):
-        print a[0]
-        print a[2]
+    
+def check():
+    file = open('output_all.dat.plain.txt','r')
+    while 1:
+        line = file.readline()
+        if not line:
+            break
+        a = line.split(' ')
+        if(len(a[1]) != 8):
+            print a[0]
+            print a[1]
+        if(len(a[2]) != 10):
+            print a[0]
+            print a[2]
+            
+read()
     
     
     

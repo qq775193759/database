@@ -10,14 +10,12 @@ Space::Space()
 
 void Space::addFile(const char* filename)
 {
-    ifstream fin(filename);
+    ifstream fin(filename,ios::in);
     int no;
-    double x,y;
+    int x,y;
     while(fin>>no)
     {
         fin>>x>>y;
-        if(no == 26350)
-            cout<<no<<x<<y<<endl;
     }
 }
 
