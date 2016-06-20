@@ -50,3 +50,21 @@ void Space::buildAll()
     end_t = time(&end_t);
     cout <<"buildall use time:"<< end_t - start_t <<endl;
 }
+
+void Space::checkAll()
+{
+    time_t start_t,end_t;
+    start_t = time(&start_t);
+    
+    end_t = time(&end_t);
+    cout <<"checkall use time:"<< end_t - start_t <<endl;
+}
+
+int Space::checkDis(int a,int b)
+{
+    int x1 = global_points[a].x;
+    int y1 = global_points[a].y;
+    int x2 = global_points[b].x;
+    int y2 = global_points[b].y;
+    return 1;
+}

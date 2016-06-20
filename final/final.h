@@ -43,4 +43,6 @@ public:
     Space();
     void addFile(const char* filename);
     void buildAll();
+    void checkAll();
+    int checkDis(int a,int b);
 };
