@@ -3,8 +3,14 @@
 
 using namespace std;
 
-const int RANGE_X = 100;
-const int RANGE_Y = 100;
+const int RANGE_X = 350;
+const int RANGE_Y = 350;
+
+const int GRID_X = 901;
+const int GRID_Y = 1408;
+
+const int BASE_X = 39787000;
+const int BASE_Y = 116147000;
 
 struct Point
 {
@@ -23,7 +29,7 @@ struct Track
 struct Range
 {
     vector<int> points;
-    vector<int> owners;
+    void add(int x){points.push_back(x);}
 };
 
 class Space
@@ -36,7 +42,5 @@ class Space
 public:
     Space();
     void addFile(const char* filename);
-    void buildTrack();
-    void buildRange();
     void buildAll();
 };

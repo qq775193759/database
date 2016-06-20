@@ -1,4 +1,5 @@
 #include "final.h"
+#include <ctime>
 #include <fstream>
 
 using namespace std;
@@ -10,6 +11,8 @@ Space::Space()
 
 void Space::addFile(const char* filename)
 {
+    time_t start_t,end_t;
+    start_t = time(&start_t);
     cout<<"begin: readfile"<<endl;
     ifstream fin(filename,ios::in);
     int no;
@@ -21,26 +24,29 @@ void Space::addFile(const char* filename)
         global_points.push_back(p);
     }
     cout<<"end:readfile  all points: "<<global_points.size()<<endl;
+    end_t = time(&end_t);
+    cout <<"readfile use time:"<< end_t - start_t <<endl;
     vector<Track> temp_track(no+1);
     global_tracks = temp_track;
     fin.close();
 }
 
-void Space::buildTrack()
-{
-    for(int i=0;i<global_points.size();i++)
-    {
-        global_tracks[global_points[i].no].add(i);
-    }
-}
-
-void Space::buildRange()
-{
-    
-}
-
 void Space::buildAll()
 {
-    buildTrack();
-    buildRange();
+    time_t start_t,end_t;
+    start_t = time(&start_t);
+    for(int i=0;i<global_points.size();i++)
+    {
+        int x=global_points[i].x;
+        int y=global_points[i].y;
+        int x_rank = (x-BASE_X)/GRID_X;
+        int y_rank = (y-BASE_Y)/GRID_Y;
+        int no=global_points[i].no;
+        global_tracks[no].add(i);
+        for(int r=-1;r<=1;r++)
+            for(int s=-1;s<=1;s++)
+                ranges[x_rank+r][y_rank+s].add(i);
+    }
+    end_t = time(&end_t);
+    cout <<"buildall use time:"<< end_t - start_t <<endl;
 }
