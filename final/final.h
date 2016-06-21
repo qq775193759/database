@@ -35,16 +35,6 @@ struct Track
     void add(int x){points.push_back(x);}
 };
 
-struct Range
-{
-    vector<int> points;
-    vector<int> owners;
-    inline void add(int x,int y)
-    {
-        points.push_back(x);
-        owners.push_back(y);
-    }
-};
 
 struct HashSet
 {
@@ -97,7 +87,7 @@ class Space
     //data
     vector<Point> global_points;
     vector<Track> global_tracks;
-    Range ranges[RANGE_X][RANGE_Y];
+    vector<pair<int,int> > ranges[RANGE_X][RANGE_Y];
     int size;
 
     HashSet hashset;

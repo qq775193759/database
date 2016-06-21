@@ -45,10 +45,13 @@ void Space::buildAll()
         int y_rank = (y-BASE_Y)/GRID_Y;
         int no=global_points[i].no;
         global_tracks[no].add(i);
+        pair<int,int> temp_pair;
         for(int r=-1;r<=1;r++)
             for(int s=-1;s<=1;s++)
             {
-                ranges[x_rank+r][y_rank+s].add(i,no);
+                temp_pair.first = i;
+                temp_pair.second = no;
+                ranges[x_rank+r][y_rank+s].push_back(temp_pair);
             }
     }
     int sum = 0;
@@ -102,12 +105,12 @@ void Space::checkAll()
             int y = global_points[j].y;
             int x_rank = (x-BASE_X)/GRID_X;
             int y_rank = (y-BASE_Y)/GRID_Y;
-            Range &temp_range = ranges[x_rank][y_rank];
-            for(int k=0;k<temp_range.points.size();k++)
+            vector<pair<int,int> > &temp_range = ranges[x_rank][y_rank];
+            for(int k=0;k<temp_range.size();k++)
             {
-                int rank_target = temp_range.points[k];
+                int rank_target = temp_range[k].first;
                 //int temp_no = global_points[rank_target].no;
-                int temp_no = temp_range.owners[k];
+                int temp_no = temp_range[k].second;
                 if(hashset.check(temp_no))
                 {
                     if(simDis(rank_target,j))
