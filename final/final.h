@@ -45,6 +45,7 @@ struct HashSet
 {
     int* co;
     int standart;
+    int ones;
     HashSet()
     {
         co = new int[MAX_POINT];
@@ -57,14 +58,19 @@ struct HashSet
         }
         co[n] = -1;
         standart = -1;
+        ones = 1;
     }
-    inline void addStd()
+    inline int addStd()
     {
+        int res = ones;
         standart++;
+        ones = 0;
+        return res;
     }
     inline void set(int n)
     {
         co[n]++;
+        ones ++;
     }
     inline int check(int n)
     {
