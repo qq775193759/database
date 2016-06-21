@@ -38,7 +38,12 @@ struct Track
 struct Range
 {
     vector<int> points;
-    void add(int x){points.push_back(x);}
+    vector<int> owners;
+    inline void add(int x,int y)
+    {
+        points.push_back(x);
+        owners.push_back(y);
+    }
 };
 
 struct HashSet
@@ -58,14 +63,14 @@ struct HashSet
         }
         co[n] = -1;
         standart = -1;
-        ones = 1;
+        ones = 0;
     }
     inline int addStd()
     {
         int res = ones;
         standart++;
         ones = 0;
-        return res;
+        return (standart==0)?1:res;
     }
     inline void set(int n)
     {
@@ -78,6 +83,7 @@ struct HashSet
     }
     void print(int n)
     {
+        if(addStd()==0) return;
         for(int i=0;i<MAX_POINT;i++)
         {
             if(co[i] == standart)

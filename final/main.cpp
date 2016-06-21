@@ -6,14 +6,14 @@ using namespace std;
 
 int main()
 {
-    Space space;
+    Space* space = new Space;
     //cout<<space.checkDis(39830929,116392052,39830441,116379280)<<endl;
     //cout<<space.checkDis(39830021,116364861,39830441,116379280)<<endl;
 
 
-    space.addFile("output_all.dat.plain.txt");
-    space.buildAll();
-    space.checkAll();
+    space->addFile("output_all.dat.plain.txt");
+    space->buildAll();
+    space->checkAll();
     //cout<<space.check(14953,1717)<<endl;
     //cout<<space.check(13343,5392)<<endl;
     //cout<<space.check(17896,6986)<<endl;

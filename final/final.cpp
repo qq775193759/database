@@ -47,7 +47,9 @@ void Space::buildAll()
         global_tracks[no].add(i);
         for(int r=-1;r<=1;r++)
             for(int s=-1;s<=1;s++)
-                ranges[x_rank+r][y_rank+s].add(i);
+            {
+                ranges[x_rank+r][y_rank+s].add(i,no);
+            }
     }
     int sum = 0;
     for(int i=0;i<size;i++)
@@ -101,15 +103,11 @@ void Space::checkAll()
             int x_rank = (x-BASE_X)/GRID_X;
             int y_rank = (y-BASE_Y)/GRID_Y;
             Range &temp_range = ranges[x_rank][y_rank];
-            //clock_t start_time2 = clock();
             for(int k=0;k<temp_range.points.size();k++)
             {
                 int rank_target = temp_range.points[k];
-                //clock_t start_time3 = clock();
-                int temp_no = global_points[rank_target].no;
-                //clock_t end_time3 = clock();
-                //t3 +=(end_time3-start_time3); 
-                //clock_t start_time1 = clock();
+                //int temp_no = global_points[rank_target].no;
+                int temp_no = temp_range.owners[k];
                 if(hashset.check(temp_no))
                 {
                     if(simDis(rank_target,j))
@@ -117,19 +115,14 @@ void Space::checkAll()
                         hashset.set(temp_no);
                     }
                 }
-                //clock_t end_time1 = clock();
-                //t1 +=(end_time1-start_time1); 
             }
-            //clock_t end_time2 = clock();
-            //t2 +=(end_time2-start_time2); 
         }
-        hashset.addStd();
         hashset.print(i);
     }
     //body
     end_t = time(&end_t);
     cout <<"checkall use time:"<< end_t - start_t <<endl;
-    cout<<"t1: "<<t1<<" t2: "<<t2<<" t3: "<<t3<<endl;
+    //cout<<"t1: "<<t1<<" t2: "<<t2<<" t3: "<<t3<<endl;
 }
 
 int Space::checkDis(int x1,int y1,int x2,int y2)
