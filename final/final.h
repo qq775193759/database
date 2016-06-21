@@ -4,12 +4,12 @@
 using namespace std;
 
 const int RANGE_X = 350;
-const int RANGE_Y = 405;
+const int RANGE_Y = 401;
 
 const int GRID_X = 900;
 const int GRID_Y = 1170;
 
-const int BASE_X = 39787000;
+const int BASE_X = 39787500;
 const int BASE_Y = 116147000;
 
 const double PI = 3.1415;

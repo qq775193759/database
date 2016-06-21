@@ -46,13 +46,16 @@ void Space::buildAll()
         int no=global_points[i].no;
         global_tracks[no].add(i);
         pair<int,int> temp_pair;
-        for(int r=-1;r<=1;r++)
-            for(int s=-1;s<=1;s++)
-            {
-                temp_pair.first = i;
-                temp_pair.second = no;
-                ranges[x_rank+r][y_rank+s].push_back(temp_pair);
-            }
+        // for(int r=-1;r<=1;r++)
+        //     for(int s=-1;s<=1;s++)
+        //     {
+        //         temp_pair.first = i;
+        //         temp_pair.second = no;
+        //         ranges[x_rank+r][y_rank+s].push_back(temp_pair);
+        //     }
+        temp_pair.first = i;
+        temp_pair.second = no;
+        ranges[x_rank][y_rank].push_back(temp_pair);
     }
     int sum = 0;
     for(int i=0;i<size;i++)
@@ -105,20 +108,24 @@ void Space::checkAll()
             int y = global_points[j].y;
             int x_rank = (x-BASE_X)/GRID_X;
             int y_rank = (y-BASE_Y)/GRID_Y;
-            vector<pair<int,int> > &temp_range = ranges[x_rank][y_rank];
-            for(int k=0;k<temp_range.size();k++)
-            {
-                int rank_target = temp_range[k].first;
-                //int temp_no = global_points[rank_target].no;
-                int temp_no = temp_range[k].second;
-                if(hashset.check(temp_no))
+            for(int r=-1;r<=1;r++)
+                for(int s=-1;s<=1;s++)
                 {
-                    if(simDis(rank_target,j))
+                    vector<pair<int,int> > &temp_range = ranges[x_rank+r][y_rank+s];
+                    for(int k=0;k<temp_range.size();k++)
                     {
-                        hashset.set(temp_no);
+                        int rank_target = temp_range[k].first;
+                        int temp_no = temp_range[k].second;
+                        if(hashset.check(temp_no))
+                        {
+                            if(simDis(rank_target,j))
+                            {
+                                hashset.set(temp_no);
+                            }
+                        }
                     }
                 }
-            }
+            
         }
         hashset.print(i);
     }
@@ -167,6 +174,8 @@ int Space::simDis(int a,int b)
     if(dx>GRID_X || dy>GRID_Y) return 0;
     double x100 = (double(dx)*0.111194996458);
     double y100 = (double(dy)*0.085499886753);
+    //int x100 = dx/9;
+    //int y100 = dy*10/117;
     int dis = x100*x100 + y100*y100;
     if(dis>10000) return 0;
     return 1;
