@@ -4,13 +4,20 @@
 using namespace std;
 
 const int RANGE_X = 350;
-const int RANGE_Y = 350;
+const int RANGE_Y = 405;
 
-const int GRID_X = 901;
-const int GRID_Y = 1408;
+const int GRID_X = 900;
+const int GRID_Y = 1170;
 
 const int BASE_X = 39787000;
 const int BASE_Y = 116147000;
+
+const double PI = 3.1415;
+const double BIG180 = 180000000.0;
+//const double EARTH_RADIUS = 6371.393;
+const double EARTH_RADIUS = 6378.137;
+
+const int MAX_POINT = 18887;
 
 struct Point
 {
@@ -23,6 +30,8 @@ struct Point
 struct Track
 {
     vector<int> points;
+    int st;
+    int en;
     void add(int x){points.push_back(x);}
 };
 
@@ -32,17 +41,64 @@ struct Range
     void add(int x){points.push_back(x);}
 };
 
+struct HashSet
+{
+    int* co;
+    int standart;
+    HashSet()
+    {
+        co = new int[MAX_POINT];
+    }
+    void reset(int n)
+    {
+        for(int i=0;i<MAX_POINT;i++)
+        {
+            co[i] = 0;
+        }
+        co[n] = -1;
+        standart = -1;
+    }
+    inline void addStd()
+    {
+        standart++;
+    }
+    inline void set(int n)
+    {
+        co[n]++;
+    }
+    inline int check(int n)
+    {
+        return (co[n]==standart);
+    }
+    void print(int n)
+    {
+        for(int i=0;i<MAX_POINT;i++)
+        {
+            if(co[i] == standart)
+                cout<<n<<" "<<i<<endl;
+        }
+    }
+};
+
 class Space
 {
     //data
     vector<Point> global_points;
     vector<Track> global_tracks;
     Range ranges[RANGE_X][RANGE_Y];
+    int size;
+
+    HashSet hashset;
 
 public:
     Space();
     void addFile(const char* filename);
     void buildAll();
     void checkAll();
+    int check(int a,int b);
     int checkDis(int a,int b);
+    int checkDis(int x1,int y1,int x2,int y2);
+    int simDis(int a,int b);
+
+    void printDebug();
 };
