@@ -11,7 +11,7 @@ int main()
     //cout<<space.checkDis(39830021,116364861,39830441,116379280)<<endl;
 
 
-    space->addFile("output_all.dat.plain.txt");
+    space->addFile("output_all2.dat.plain.txt");
     space->buildAll();
     space->checkAll();
     //cout<<space.check(14953,1717)<<endl;

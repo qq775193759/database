@@ -2,6 +2,7 @@
 #include <ctime>
 #include <cstdio>
 #include <cmath>
+#include <cstring>
 
 using namespace std;
 
@@ -18,9 +19,34 @@ void Space::addFile(const char* filename)
     FILE* stream = fopen(filename,"r");
     int no;
     int x,y;
-    while(fscanf(stream,"%d",&no)!=-1)
+    char buffer[32];
+    while(!feof(stream))
     {
-        fscanf(stream,"%d %d",&x,&y);
+        fgets(buffer,32,stream);
+        int flag=0;
+        
+        no=0;x=0;y=0;
+        for(int i=0;i<32;i++)
+        {
+            if(buffer[i]==' ') flag++;
+            else if(buffer[i]>='0')
+            {
+                switch(flag)
+                {
+                    case 0:
+                        no = no*10+buffer[i]-'0';
+                        break;
+                    case 1:
+                        x = x*10+buffer[i]-'0';
+                        break;
+                    case 2:
+                        y = y*10+buffer[i]-'0';
+                        break;
+                }
+            }
+            else
+                break;
+        }
         Point p(no,x,y);
         global_points.push_back(p);
     }
